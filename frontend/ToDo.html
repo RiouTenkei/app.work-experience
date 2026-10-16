@@ -39,6 +39,13 @@ function newElement() {
     document.getElementById("myInput").value = "";
 }
 
+
+async function getTasks() {
+    const data = await fetch("http://localhost:3000/tasks");
+    console.log(data);
+}
+
+getTasks();
 </script>
 </body>
 </html>
