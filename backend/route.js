@@ -1,62 +1,34 @@
 import express from 'express'
-import { userLogin, userSignup } from './controller.js'
 import * as fs from 'fs';
-import e from 'express';
+import {createTask, deleteTask, findTaskById, getJsonFile, updateTask} from "./utils/db.js";
 
 const router = express.Router()
 
-
 // Tasks Routes
-router.get('/', (req,res,next) => {
-    // Get all the tasks from the json file
-    let tasks;
-    fs.readFile('./db.json', function (err, data) {
-        if (err) throw err;
-        tasks = JSON.parse(data);
-        res.json(tasks);
-    })
+router.get('/', (req, res, next) => {
+    res.json(getJsonFile());
 })
 
 
-
-router.get('/:id', (req,res,next) => {
+router.get('/:id', (req, res, next) => {
     const taskId = req.params.id
-    let tasks;
-    fs.readFile('./db.json', function (err, data) {
-        if (err) throw err;
-        tasks = JSON.parse(data);  
-        
-        const taskRecord = tasks.find((task) => {
-            return task.id === taskId;
-        })
-
-        res.send(taskRecord);
-        
-    })
+    res.json(findTaskById(taskId));
 });
 
 
-
-
-router.post('/', (req,res,next) => {    
-    
-    console.log(req);
-    res.send('aweklfaiwoefj');
-    
-})
-router.put('/:id', (req,res,next) => {
-    
-    // Find the tasks with the '/:id'
-
-    // Update the tasks with the information you have gotten from the request body
-
-})
-router.delete('/:id', (req,res,next) => {
-    // Find the tasks with the '/:id'
-
-    // Remove it from the json file
+router.post('/', (req, res, next) => {
+    const task = createTask(req.body.name)
+    res.json(task);
 })
 
+router.put('/:id', (req, res, next) => {
+    const task = updateTask(req.params.id, req.body.name);
+    res.json(task);
+})
 
+router.delete('/:id', (req, res, next) => {
+    deleteTask(req.params.id);
+    res.json();
+})
 
 export default router
