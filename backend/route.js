@@ -17,8 +17,9 @@ router.get('/:id', (req, res, next) => {
 
 
 router.post('/', (req, res, next) => {
-    const task = createTask(req.body.name)
-    res.json(task);
+    console.log(req.body)
+    // const task = createTask(req.body.name)
+    res.json();
 })
 
 router.put('/:id', (req, res, next) => {
